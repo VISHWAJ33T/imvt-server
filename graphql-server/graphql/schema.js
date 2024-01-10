@@ -77,7 +77,7 @@ type Logo {
   aspectRatio: Float
   width: Int
 }
-type MovieRecommendations {
+type MediaRecommendations {
   id: ID!
   title: String!
   image: String
@@ -85,6 +85,23 @@ type MovieRecommendations {
   rating: Float
   releaseDate: String
 }
+type ReviewerDetails { 
+  name: String
+  username: String
+  avatar_path: String
+  rating: Int 
+}
+
+type Review {
+  author: String
+  content: String
+  created_at: String
+  id: String
+  updated_at: String
+  url: String
+  author_details: ReviewerDetails 
+}
+
 type SingleMovie {
   adult: Boolean
   backdrop_path: String!
@@ -115,25 +132,18 @@ type SingleMovie {
   streamingId: String
   casts: [PeopleCredits]
   logos: [Logo]
-  recommendations: [MovieRecommendations]
-  similar: [MovieRecommendations]
+  recommendations: [MediaRecommendations]
+  similar: [MediaRecommendations]
+  reviews: [Review]
 }
-type Seasons { 
-  air_date: String
-  episode_count: Int
+type Networks { 
   id: Int
-  name: String
-  overview: String
-  poster_path: String
-  season_number: Int
-  vote_average: Int }
-
-type Networks { id: Int
   logo_path: String
   name: String
   origin_country: String }
 
-type LastEpisodeToAir { id: Int
+type LastEpisodeToAir { 
+  id: Int
   name: String
   overview: String
   vote_average: Int
@@ -147,12 +157,33 @@ type LastEpisodeToAir { id: Int
   show_id: Int
   still_path: String }
 
-type CreatedBy { id: Int
+type CreatedBy { 
+  id: Int
   credit_id: String
   name: String
   gender: Int
-  profile_path: String }
-
+  profile_path: String 
+}
+type seasonImage{
+  mobile:String
+  hd:String
+}
+type episode{
+  id:ID!
+  title:String
+  episode:Int
+  Season:Int
+  releaseDate:String
+  description:String
+  url:String
+  img:seasonImage
+}
+type season {
+  season:Int
+  image:seasonImage
+  episodes:[episode]
+  isReleased:Boolean
+}
 type SingleTV { adult: Boolean
   backdrop_path: String
   first_air_date: String
@@ -175,7 +206,6 @@ type SingleTV { adult: Boolean
   vote_average: Float
   vote_count: Int
   spoken_languages: [Language]
-  seasons: [Seasons ]
   production_countries: [Country]
   production_companies: [Company]
   origin_country: [String ]
@@ -184,7 +214,17 @@ type SingleTV { adult: Boolean
   languages: [String ]
   genres: [String ]
   episode_run_time: [Int ]
-  created_by: [CreatedBy ] }
+  created_by: [CreatedBy ] 
+  streamingId: String
+  totalSeasons: Int
+  totalEpisodes: Int
+  casts: [PeopleCredits]
+  logos: [Logo]
+  similar: [MediaRecommendations]
+  recommendations: [MediaRecommendations]
+  seasons: [season]
+  reviews: [Review]
+}
 
 union Media = Movie | TV
 

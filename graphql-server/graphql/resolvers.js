@@ -45,11 +45,41 @@ const resolvers = {
         recommendations: async (movie) => {
             return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${movie.id}?type=movie`)).data.recommendations;
         },
+        reviews: async (movie) => {
+            return (await axios.get(`${process.env.TMDB_BASE_URL}/movie/${movie.id}/reviews?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results;
+        },
     },
     SingleTV: {
-        poster_path: (movie) => { if (!movie.poster_path) { return "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.poster_path}` } },
-        backdrop_path: (movie) => { if (!movie.backdrop_path) { return "https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61sOYsWxujL._AC_UF1000,1000_QL80_.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.backdrop_path}` } },
-        genres: (movie) => movie.genres.map(genre => genre.name),
+        poster_path: (tv) => { if (!tv.poster_path) { return "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg" } else { return `https://image.tmdb.org/t/p/original${tv.poster_path}` } },
+        backdrop_path: (tv) => { if (!tv.backdrop_path) { return "https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61sOYsWxujL._AC_UF1000,1000_QL80_.jpg" } else { return `https://image.tmdb.org/t/p/original${tv.backdrop_path}` } },
+        genres: (tv) => tv.genres.map(genre => genre.name),
+        streamingId: async (tv) => {
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.id;
+        },
+        totalSeasons: async (tv) => {
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.totalSeasons;
+        },
+        totalEpisodes: async (tv) => {
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.totalEpisodes;
+        },
+        casts: async (tv) => {
+            return (await axios.get(`${process.env.TMDB_BASE_URL}/tv/${tv.id}/credits?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.cast;
+        },
+        logos: async (tv) => {
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.logos;
+        },
+        similar: async (tv) => {
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.similar;
+        },
+        recommendations: async (tv) => {
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.recommendations;
+        },
+        seasons: async (tv) => {
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.seasons;
+        },
+        reviews: async (tv) => {
+            return (await axios.get(`${process.env.TMDB_BASE_URL}/tv/${tv.id}/reviews?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results;
+        },
     },
     TV: {
         poster_path: (tv) => `https://image.tmdb.org/t/p/original${tv.poster_path}`,
