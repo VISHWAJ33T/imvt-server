@@ -1,11 +1,9 @@
 const express = require('express')
-const fs = require('fs');
 const { ApolloServer } = require('@apollo/server')
 const { expressMiddleware } = require('@apollo/server/express4')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const { gql } = require('graphql-tag');
-const typeDefs = gql(fs.readFileSync('./graphql/Schema.graphql', 'utf8'));
+const typeDefs = require('./graphql/schema.js');
 const resolvers = require('./graphql/resolvers.js');
 require('dotenv').config()
 async function startServer() {
