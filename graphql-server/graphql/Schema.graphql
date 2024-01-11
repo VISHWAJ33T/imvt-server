@@ -1,4 +1,3 @@
-const typeDefs = `
 type TV {
   adult: Boolean
   backdrop_path: String!
@@ -15,6 +14,7 @@ type TV {
   vote_average: Float
   vote_count: Int
   origin_country: [String]
+  streamingId: String
 }
 type Movie {
   adult: Boolean
@@ -70,7 +70,7 @@ type VideoResults {
   id: String
 }
 type Video {
-results: [VideoResults]
+  results: [VideoResults]
 }
 type Logo {
   url: String
@@ -85,11 +85,11 @@ type MediaRecommendations {
   rating: Float
   releaseDate: String
 }
-type ReviewerDetails { 
+type ReviewerDetails {
   name: String
   username: String
   avatar_path: String
-  rating: Int 
+  rating: Float
 }
 
 type Review {
@@ -99,7 +99,7 @@ type Review {
   id: String
   updated_at: String
   url: String
-  author_details: ReviewerDetails 
+  author_details: ReviewerDetails
 }
 
 type SingleMovie {
@@ -136,17 +136,18 @@ type SingleMovie {
   similar: [MediaRecommendations]
   reviews: [Review]
 }
-type Networks { 
+type Networks {
   id: Int
   logo_path: String
   name: String
-  origin_country: String }
+  origin_country: String
+}
 
-type LastEpisodeToAir { 
+type LastEpisodeToAir {
   id: Int
   name: String
   overview: String
-  vote_average: Int
+  vote_average: Float
   vote_count: Int
   air_date: String
   episode_number: Int
@@ -155,36 +156,42 @@ type LastEpisodeToAir {
   runtime: Int
   season_number: Int
   show_id: Int
-  still_path: String }
+  still_path: String
+}
 
-type CreatedBy { 
+type CreatedBy {
   id: Int
   credit_id: String
   name: String
   gender: Int
-  profile_path: String 
+  profile_path: String
 }
-type seasonImage{
-  mobile:String
-  hd:String
+type SeasonImage {
+  mobile: String
+  hd: String
 }
-type episode{
-  id:ID!
-  title:String
-  episode:Int
-  Season:Int
-  releaseDate:String
-  description:String
-  url:String
-  img:seasonImage
+type Episode {
+  id: ID!
+  title: String
+  episode: Int
+  Season: Int
+  releaseDate: String
+  description: String
+  url: String
+  img: SeasonImage
 }
-type season {
-  season:Int
-  image:seasonImage
-  episodes:[episode]
-  isReleased:Boolean
+type Season {
+  season: Int
+  image: SeasonImage
+  episodes: [Episode]
+  isReleased: Boolean
 }
-type SingleTV { adult: Boolean
+type Trailer {
+  id: ID!
+  url: String
+}
+type SingleTV {
+  adult: Boolean
   backdrop_path: String
   first_air_date: String
   homepage: String
@@ -193,8 +200,6 @@ type SingleTV { adult: Boolean
   last_air_date: String
   name: String
   next_episode_to_air: String
-  number_of_episodes: Int
-  number_of_seasons: Int
   original_language: String
   original_name: String
   overview: String
@@ -208,22 +213,24 @@ type SingleTV { adult: Boolean
   spoken_languages: [Language]
   production_countries: [Country]
   production_companies: [Company]
-  origin_country: [String ]
-  networks: [Networks ]
+  origin_country: [String]
+  networks: [Networks]
   last_episode_to_air: LastEpisodeToAir
-  languages: [String ]
-  genres: [String ]
-  episode_run_time: [Int ]
-  created_by: [CreatedBy ] 
+  languages: [String]
+  genres: [String]
+  episode_run_time: [Int]
+  created_by: [CreatedBy]
   streamingId: String
-  totalSeasons: Int
-  totalEpisodes: Int
+  number_of_seasons: Int
+  number_of_episodes: Int
   casts: [PeopleCredits]
   logos: [Logo]
   similar: [MediaRecommendations]
   recommendations: [MediaRecommendations]
-  seasons: [season]
+  seasons: [Season]
   reviews: [Review]
+  trailer: Trailer
+  videos: Video
 }
 
 union Media = Movie | TV
@@ -278,6 +285,4 @@ type Query {
   getTvTopRated: [TV]
   getPeopleTrendingToday: [People]
   getPeopleTrendingWeek: [People]
-}`
-
-module.exports = typeDefs;
+}

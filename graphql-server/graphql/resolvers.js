@@ -26,6 +26,17 @@ const resolvers = {
             return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${movie.id}?type=movie`)).data.id;
         },
     },
+    TV: {
+        poster_path: (tv) => `https://image.tmdb.org/t/p/original${tv.poster_path}`,
+        backdrop_path: (tv) => `https://image.tmdb.org/t/p/original${tv.backdrop_path}`,
+        genre_ids: (tv) => tv.genre_ids.map(id => {
+            const genre = TvGenres.find(genre => genre.id === id);
+            return genre ? genre.name : null;
+        }),
+        streamingId: async (tv) => {
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.id;
+        },
+    },
     SingleMovie: {
         poster_path: (movie) => { if (!movie.poster_path) { return "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.poster_path}` } },
         backdrop_path: (movie) => { if (!movie.backdrop_path) { return "https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61sOYsWxujL._AC_UF1000,1000_QL80_.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.backdrop_path}` } },
@@ -56,14 +67,11 @@ const resolvers = {
         streamingId: async (tv) => {
             return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.id;
         },
-        totalSeasons: async (tv) => {
-            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.totalSeasons;
-        },
-        totalEpisodes: async (tv) => {
-            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.totalEpisodes;
-        },
         casts: async (tv) => {
             return (await axios.get(`${process.env.TMDB_BASE_URL}/tv/${tv.id}/credits?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.cast;
+        },
+        videos: async (tv) => {
+            return (await axios.get(`${process.env.TMDB_BASE_URL}/tv/${tv.id}/videos?language=en-US&api_key=${process.env.TMDB_KEY}`)).data;
         },
         logos: async (tv) => {
             return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.logos;
@@ -77,17 +85,12 @@ const resolvers = {
         seasons: async (tv) => {
             return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.seasons;
         },
+        trailer: async (tv) => {
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.trailer;
+        },
         reviews: async (tv) => {
             return (await axios.get(`${process.env.TMDB_BASE_URL}/tv/${tv.id}/reviews?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results;
         },
-    },
-    TV: {
-        poster_path: (tv) => `https://image.tmdb.org/t/p/original${tv.poster_path}`,
-        backdrop_path: (tv) => `https://image.tmdb.org/t/p/original${tv.backdrop_path}`,
-        genre_ids: (tv) => tv.genre_ids.map(id => {
-            const genre = TvGenres.find(genre => genre.id === id);
-            return genre ? genre.name : null;
-        }),
     },
     People: {
         profile_path: (people) => `https://image.tmdb.org/t/p/original${people.profile_path}`,
@@ -122,7 +125,7 @@ const resolvers = {
         getMovieTopRated: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/top_rated?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
         getMoviePopular: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/popular?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
         // TV
-        getTvbyId: async (parent, { tmdbId }) => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/${tmdbId}?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data,
+        getTvbyId: async (parent, { tmdbId }) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/${tmdbId}?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data,
         getTvbyQuery: async (parent, { query }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/tv?query=${query}&language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
         getTvTrendingToday: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/tv/day?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results,
         getTvTrendingWeek: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/tv/week?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results,
