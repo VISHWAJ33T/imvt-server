@@ -5,20 +5,21 @@ const TvGenres = [{ "id": 10759, "name": "Action & Adventure" }, { "id": 16, "na
 const resolvers = {
     Media: {
         __resolveType(obj, context, info) {
+            if (obj.media_type === "person") {
+                return 'People';
+            }
             if (obj.title) {
                 return 'Movie';
             }
             if (obj.name) {
                 return 'TV';
             }
-            return null;
         },
-
     },
     Movie: {
         poster_path: (movie) => { if (!movie.poster_path) { return "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.poster_path}` } },
         backdrop_path: (movie) => { if (!movie.backdrop_path) { return "https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61sOYsWxujL._AC_UF1000,1000_QL80_.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.backdrop_path}` } },
-        genre_ids: (movie) => movie.genre_ids.map(id => {
+        genre_ids: (movie) => movie.genre_ids?.map(id => {
             const genre = MovieGenres.find(genre => genre.id === id);
             return genre ? genre.name : null;
         }),
@@ -29,7 +30,7 @@ const resolvers = {
     TV: {
         poster_path: (tv) => `https://image.tmdb.org/t/p/original${tv.poster_path}`,
         backdrop_path: (tv) => `https://image.tmdb.org/t/p/original${tv.backdrop_path}`,
-        genre_ids: (tv) => tv.genre_ids.map(id => {
+        genre_ids: (tv) => tv.genre_ids?.map(id => {
             const genre = TvGenres.find(genre => genre.id === id);
             return genre ? genre.name : null;
         }),
@@ -113,29 +114,31 @@ const resolvers = {
     },
     Query: {
         // Both Movie and TV
-        getAnybyQuery: async (parent, { query }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/multi?query=${query}&language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getAnyTrendingToday: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/all/day?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getAnyTrendingWeek: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/all/week?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getAnybyQuery: async (parent, { query, page = 1 }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/multi?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getAnyTrendingToday: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/all/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getAnyTrendingWeek: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/all/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
         // Movie
-        getMoviebyId: async (parent, { tmdbId }) => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/${tmdbId}?language=en-US&page=1&api_key=${process.env.TMDB_KEY}&append_to_response=videos`)).data,
-        getMoviebyQuery: async (parent, { query }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/movie?query=${query}&language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getMovieTrendingToday: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/movie/day?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getMovieTrendingWeek: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/movie/week?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getMovieUpcoming: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/upcoming?&language=en-US&region=IN&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getMovieTopRated: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/top_rated?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getMoviePopular: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/popular?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getMoviebyId: async (parent, { tmdbId }) => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/${tmdbId}?language=en-US&api_key=${process.env.TMDB_KEY}&append_to_response=videos`)).data,
+        getMoviebyQuery: async (parent, { query, page = 1 }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/movie?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getMovieTrendingToday: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/movie/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getMovieTrendingWeek: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/movie/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getMovieUpcoming: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/upcoming?&language=en-US&region=IN&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getMovieTopRated: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/top_rated?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getMoviePopular: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/popular?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
         // TV
-        getTvbyId: async (parent, { tmdbId }) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/${tmdbId}?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data,
-        getTvbyQuery: async (parent, { query }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/tv?query=${query}&language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvTrendingToday: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/tv/day?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvTrendingWeek: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/tv/week?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvAiringToday: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/airing_today?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvOnTheAir: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/on_the_air?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvTopRated: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/top_rated?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvPopular: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/popular?language=en-US&page=1&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getTvbyId: async (parent, { tmdbId }) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/${tmdbId}?language=en-US&api_key=${process.env.TMDB_KEY}`)).data,
+        getTvbyQuery: async (parent, { query, page = 1 }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/tv?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getTvTrendingToday: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/tv/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getTvTrendingWeek: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/tv/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getTvAiringToday: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/airing_today?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getTvOnTheAir: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/on_the_air?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getTvTopRated: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/top_rated?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getTvPopular: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/popular?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+
         // People
-        getPeopleTrendingWeek: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/person/week?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getPeopleTrendingToday: async () => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/person/day?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getpeoplebyQuery: async (parent, { query, page = 1 }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/person?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getPeopleTrendingWeek: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/person/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getPeopleTrendingToday: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/person/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
     }
 }
 

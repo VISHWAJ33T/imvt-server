@@ -1,12 +1,12 @@
 const typeDefs = `
 type TV {
     adult: Boolean
-    backdrop_path: String!
+    backdrop_path: String
     id: ID!
     name: String!
     original_language: String
     original_name: String
-    overview: String!
+    overview: String
     poster_path: String
     media_type: String
     genre_ids: [String]
@@ -19,12 +19,12 @@ type TV {
   }
   type Movie {
     adult: Boolean
-    backdrop_path: String!
+    backdrop_path: String
     id: ID!
     title: String!
     original_language: String
     original_title: String
-    overview: String!
+    overview: String
     poster_path: String
     media_type: String
     genre_ids: [String]
@@ -105,7 +105,7 @@ type TV {
   
   type SingleMovie {
     adult: Boolean
-    backdrop_path: String!
+    backdrop_path: String
     belongs_to_collection: Collection
     budget: Int
     genres: [String]
@@ -114,7 +114,7 @@ type TV {
     imdb_id: String
     original_language: String
     original_title: String
-    overview: String!
+    overview: String
     popularity: Float
     poster_path: String
     production_companies: [Company]
@@ -172,7 +172,7 @@ type TV {
     hd: String
   }
   type Episode {
-    id: ID!
+    id: ID
     title: String
     episode: Int
     Season: Int
@@ -188,7 +188,7 @@ type TV {
     isReleased: Boolean
   }
   type Trailer {
-    id: ID!
+    id: ID
     url: String
   }
   type SingleTV {
@@ -234,7 +234,7 @@ type TV {
     videos: Video
   }
   
-  union Media = Movie | TV
+  union Media = Movie | TV | People
   
   type PeopleCredits {
     adult: Boolean
@@ -266,26 +266,27 @@ type TV {
   }
   
   type Query {
-    getAnyTrendingToday: [Media]
-    getAnyTrendingWeek: [Media]
-    getAnybyQuery(query: String!): [Media]
+    getAnyTrendingToday(page:Int): [Media]
+    getAnyTrendingWeek(page:Int): [Media]
+    getAnybyQuery(query: String!, page:Int): [Media]
     getMoviebyId(tmdbId: ID!): SingleMovie
-    getMoviebyQuery(query: String!): [Movie]
-    getMovieTrendingToday: [Movie]
-    getMovieTrendingWeek: [Movie]
-    getMoviePopular: [Movie]
-    getMovieUpcoming: [Movie]
-    getMovieTopRated: [Movie]
+    getMoviebyQuery(query: String!, page:Int): [Movie]
+    getMovieTrendingToday(page:Int): [Movie]
+    getMovieTrendingWeek(page:Int): [Movie]
+    getMoviePopular(page:Int): [Movie]
+    getMovieUpcoming(page:Int): [Movie]
+    getMovieTopRated(page:Int): [Movie]
     getTvbyId(tmdbId: ID!): SingleTV
-    getTvbyQuery(query: String!): [TV]
-    getTvTrendingToday: [TV]
-    getTvTrendingWeek: [TV]
-    getTvAiringToday: [TV]
-    getTvOnTheAir: [TV]
-    getTvPopular: [TV]
-    getTvTopRated: [TV]
-    getPeopleTrendingToday: [People]
-    getPeopleTrendingWeek: [People]
+    getTvbyQuery(query: String!, page:Int): [TV]
+    getTvTrendingToday(page:Int): [TV]
+    getTvTrendingWeek(page:Int): [TV]
+    getTvAiringToday(page:Int): [TV]
+    getTvOnTheAir(page:Int): [TV]
+    getTvPopular(page:Int): [TV]
+    getTvTopRated(page:Int): [TV]
+    getPeopleTrendingToday(page:Int): [People]
+    getPeopleTrendingWeek(page:Int): [People]
+    getpeoplebyQuery(query: String!, page:Int): [People]
   }
   `
 
