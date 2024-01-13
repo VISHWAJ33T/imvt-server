@@ -3,7 +3,7 @@ type TV {
     adult: Boolean
     backdrop_path: String
     id: ID!
-    name: String!
+    name: String
     original_language: String
     original_name: String
     overview: String
@@ -21,7 +21,7 @@ type TV {
     adult: Boolean
     backdrop_path: String
     id: ID!
-    title: String!
+    title: String
     original_language: String
     original_title: String
     overview: String
@@ -36,27 +36,27 @@ type TV {
     streamingId: String
   }
   type Collection {
-    id: ID!
-    name: String!
+    id: ID
+    name: String
     poster_path: String
     backdrop_path: String
   }
   
   type Company {
-    id: ID!
+    id: ID
     logo_path: String
-    name: String!
+    name: String
     origin_country: String
   }
   
   type Country {
     iso_3166_1: String
-    name: String!
+    name: String
   }
   
   type Language {
     iso_639_1: String
-    name: String!
+    name: String
   }
   type VideoResults {
     iso_639_1: String
@@ -79,8 +79,8 @@ type TV {
     width: Int
   }
   type MediaRecommendations {
-    id: ID!
-    title: String!
+    id: ID
+    title: String
     image: String
     type: String
     rating: Float
@@ -125,7 +125,7 @@ type TV {
     spoken_languages: [Language]
     status: String
     tagline: String
-    title: String!
+    title: String
     video: Boolean
     videos: Video
     vote_average: Float
@@ -238,8 +238,8 @@ type TV {
   
   type PeopleCredits {
     adult: Boolean
-    id: ID!
-    name: String!
+    id: ID
+    name: String
     original_name: String
     media_type: String
     popularity: Float
@@ -255,7 +255,7 @@ type TV {
     adult: Boolean
     biography: String
     id: ID!
-    name: String!
+    name: String
     original_name: String
     media_type: String
     popularity: Float
@@ -265,28 +265,60 @@ type TV {
     known_for: [Media]
   }
   
+  type PaginatedMedia {
+    results: [Media]
+    hasNextPage: Boolean
+    currentPage: Int,
+    total_pages: Int,
+    total_results: Int,
+  }
+  
+  type PaginatedMovie {
+    results: [Movie]
+    hasNextPage: Boolean
+    currentPage: Int,
+    total_pages: Int,
+    total_results: Int,
+  }
+  
+  type PaginatedTV {
+    results: [TV]
+    hasNextPage: Boolean
+    currentPage: Int,
+    total_pages: Int,
+    total_results: Int,
+  }
+  
+  type PaginatedPeople {
+    results: [People]
+    hasNextPage: Boolean
+    currentPage: Int,
+    total_pages: Int,
+    total_results: Int,
+  }
+  
   type Query {
-    getAnyTrendingToday(page:Int): [Media]
-    getAnyTrendingWeek(page:Int): [Media]
-    getAnybyQuery(query: String!, page:Int): [Media]
+    getAnyTrendingToday(page: Int): PaginatedMedia
+    getAnyTrendingWeek(page: Int): PaginatedMedia
+    getAnybyQuery(query: String!, page: Int): PaginatedMedia
     getMoviebyId(tmdbId: ID!): SingleMovie
-    getMoviebyQuery(query: String!, page:Int): [Movie]
-    getMovieTrendingToday(page:Int): [Movie]
-    getMovieTrendingWeek(page:Int): [Movie]
-    getMoviePopular(page:Int): [Movie]
-    getMovieUpcoming(page:Int): [Movie]
-    getMovieTopRated(page:Int): [Movie]
+    getMoviebyQuery(query: String!, page: Int): PaginatedMovie
+    getMovieTrendingToday(page: Int): PaginatedMovie
+    getMovieTrendingWeek(page: Int): PaginatedMovie
+    getMoviePopular(page: Int): PaginatedMovie
+    getMovieUpcoming(page: Int): PaginatedMovie
+    getMovieTopRated(page: Int): PaginatedMovie
     getTvbyId(tmdbId: ID!): SingleTV
-    getTvbyQuery(query: String!, page:Int): [TV]
-    getTvTrendingToday(page:Int): [TV]
-    getTvTrendingWeek(page:Int): [TV]
-    getTvAiringToday(page:Int): [TV]
-    getTvOnTheAir(page:Int): [TV]
-    getTvPopular(page:Int): [TV]
-    getTvTopRated(page:Int): [TV]
-    getPeopleTrendingToday(page:Int): [People]
-    getPeopleTrendingWeek(page:Int): [People]
-    getpeoplebyQuery(query: String!, page:Int): [People]
+    getTvbyQuery(query: String!, page: Int): PaginatedTV
+    getTvTrendingToday(page: Int): PaginatedTV
+    getTvTrendingWeek(page: Int): PaginatedTV
+    getTvAiringToday(page: Int): PaginatedTV
+    getTvOnTheAir(page: Int): PaginatedTV
+    getTvPopular(page: Int): PaginatedTV
+    getTvTopRated(page: Int): PaginatedTV
+    getPeopleTrendingToday(page: Int): PaginatedPeople
+    getPeopleTrendingWeek(page: Int): PaginatedPeople
+    getpeoplebyQuery(query: String!, page: Int): PaginatedPeople
   }
   `
 

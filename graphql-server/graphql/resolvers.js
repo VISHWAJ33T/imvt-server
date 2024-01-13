@@ -18,7 +18,7 @@ const resolvers = {
     },
     Movie: {
         poster_path: (movie) => { if (!movie.poster_path) { return "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.poster_path}` } },
-        backdrop_path: (movie) => { if (!movie.backdrop_path) { return "https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61sOYsWxujL._AC_UF1000,1000_QL80_.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.backdrop_path}` } },
+        backdrop_path: (movie) => { if (!movie.backdrop_path) { return "https://static.vecteezy.com/system/resources/previews/011/598/289/original/blank-smartphone-with-popcorn-film-strip-clapperboard-on-blue-background-online-streaming-movie-concept-iluustration-free-vector.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.backdrop_path}` } },
         genre_ids: (movie) => movie.genre_ids?.map(id => {
             const genre = MovieGenres.find(genre => genre.id === id);
             return genre ? genre.name : null;
@@ -28,42 +28,42 @@ const resolvers = {
         },
     },
     TV: {
-        poster_path: (tv) => `https://image.tmdb.org/t/p/original${tv.poster_path}`,
-        backdrop_path: (tv) => `https://image.tmdb.org/t/p/original${tv.backdrop_path}`,
+        poster_path: (tv) => { if (!tv.poster_path) { return "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg" } else { return `https://image.tmdb.org/t/p/original${tv.poster_path}` } },
+        backdrop_path: (tv) => { if (!tv.backdrop_path) { return "https://static.vecteezy.com/system/resources/previews/011/598/289/original/blank-smartphone-with-popcorn-film-strip-clapperboard-on-blue-background-online-streaming-movie-concept-iluustration-free-vector.jpg" } else { return `https://image.tmdb.org/t/p/original${tv.backdrop_path}` } },
         genre_ids: (tv) => tv.genre_ids?.map(id => {
             const genre = TvGenres.find(genre => genre.id === id);
             return genre ? genre.name : null;
         }),
         streamingId: async (tv) => {
-            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.id;
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data?.id;
         },
     },
     SingleMovie: {
         poster_path: (movie) => { if (!movie.poster_path) { return "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.poster_path}` } },
-        backdrop_path: (movie) => { if (!movie.backdrop_path) { return "https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61sOYsWxujL._AC_UF1000,1000_QL80_.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.backdrop_path}` } },
+        backdrop_path: (movie) => { if (!movie.backdrop_path) { return "https://static.vecteezy.com/system/resources/previews/011/598/289/original/blank-smartphone-with-popcorn-film-strip-clapperboard-on-blue-background-online-streaming-movie-concept-iluustration-free-vector.jpg" } else { return `https://image.tmdb.org/t/p/original${movie.backdrop_path}` } },
         genres: (movie) => movie.genres.map(genre => genre.name),
         streamingId: async (movie) => {
-            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${movie.id}?type=movie`)).data.id;
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${movie.id}?type=movie`)).data?.id;
         },
         casts: async (movie) => {
-            return (await axios.get(`${process.env.TMDB_BASE_URL}/movie/${movie.id}/credits?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.cast;
+            return (await axios.get(`${process.env.TMDB_BASE_URL}/movie/${movie.id}/credits?language=en-US&api_key=${process.env.TMDB_KEY}`)).data?.cast;
         },
         logos: async (movie) => {
-            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${movie.id}?type=movie`)).data.logos;
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${movie.id}?type=movie`)).data?.logos;
         },
         similar: async (movie) => {
-            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${movie.id}?type=movie`)).data.similar;
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${movie.id}?type=movie`)).data?.similar;
         },
         recommendations: async (movie) => {
-            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${movie.id}?type=movie`)).data.recommendations;
+            return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${movie.id}?type=movie`)).data?.recommendations;
         },
         reviews: async (movie) => {
-            return (await axios.get(`${process.env.TMDB_BASE_URL}/movie/${movie.id}/reviews?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.results;
+            return (await axios.get(`${process.env.TMDB_BASE_URL}/movie/${movie.id}/reviews?language=en-US&api_key=${process.env.TMDB_KEY}`)).data?.results;
         },
     },
     SingleTV: {
         poster_path: (tv) => { if (!tv.poster_path) { return "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg" } else { return `https://image.tmdb.org/t/p/original${tv.poster_path}` } },
-        backdrop_path: (tv) => { if (!tv.backdrop_path) { return "https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61sOYsWxujL._AC_UF1000,1000_QL80_.jpg" } else { return `https://image.tmdb.org/t/p/original${tv.backdrop_path}` } },
+        backdrop_path: (tv) => { if (!tv.backdrop_path) { return "https://static.vecteezy.com/system/resources/previews/011/598/289/original/blank-smartphone-with-popcorn-film-strip-clapperboard-on-blue-background-online-streaming-movie-concept-iluustration-free-vector.jpg" } else { return `https://image.tmdb.org/t/p/original${tv.backdrop_path}` } },
         genres: (tv) => tv.genres.map(genre => genre.name),
         streamingId: async (tv) => {
             return (await axios.get(`${process.env.CONSUMET_API_BASE_URL}/meta/tmdb/info/${tv.id}?type=tv`)).data.id;
@@ -94,7 +94,7 @@ const resolvers = {
         },
     },
     People: {
-        profile_path: (people) => `https://image.tmdb.org/t/p/original${people.profile_path}`,
+        profile_path: (people) => { if (!people.profile_path) { return "https://st3.depositphotos.com/1717437/18622/v/450/depositphotos_186223678-stock-illustration-incognito-unknown-person-silhouette-man.jpg" } else { return `https://image.tmdb.org/t/p/original${people.profile_path}` } },
         gender: (people) => {
             if (people.gender === 1) { return "Female" }
             else if (people.gender === 2) { return "Male" }
@@ -104,7 +104,7 @@ const resolvers = {
         biography: async (people) => (await axios.get(`${process.env.TMDB_BASE_URL}/person/${people.id}?language=en-US&api_key=${process.env.TMDB_KEY}`)).data.biography,
     },
     PeopleCredits: {
-        profile_path: (people) => `https://image.tmdb.org/t/p/original${people.profile_path}`,
+        profile_path: (people) => { if (!people.profile_path) { return "https://st3.depositphotos.com/1717437/18622/v/450/depositphotos_186223678-stock-illustration-incognito-unknown-person-silhouette-man.jpg" } else { return `https://image.tmdb.org/t/p/original${people.profile_path}` } },
         gender: (people) => {
             if (people.gender === 1) { return "Female" }
             else if (people.gender === 2) { return "Male" }
@@ -114,31 +114,202 @@ const resolvers = {
     },
     Query: {
         // Both Movie and TV
-        getAnybyQuery: async (parent, { query, page = 1 }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/multi?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getAnyTrendingToday: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/all/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getAnyTrendingWeek: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/all/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getAnybyQuery: async (parent, { query, page = 1 }) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/search/multi?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getAnyTrendingToday: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/trending/all/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getAnyTrendingWeek: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/trending/all/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
         // Movie
         getMoviebyId: async (parent, { tmdbId }) => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/${tmdbId}?language=en-US&api_key=${process.env.TMDB_KEY}&append_to_response=videos`)).data,
-        getMoviebyQuery: async (parent, { query, page = 1 }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/movie?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getMovieTrendingToday: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/movie/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getMovieTrendingWeek: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/movie/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getMovieUpcoming: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/upcoming?&language=en-US&region=IN&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getMovieTopRated: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/top_rated?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getMoviePopular: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/movie/popular?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getMoviebyQuery: async (parent, { query, page = 1 }) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/search/movie?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getMovieTrendingToday: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/trending/movie/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getMovieTrendingWeek: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/trending/movie/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getMovieUpcoming: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/movie/upcoming?&language=en-US&region=IN&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getMovieTopRated: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/movie/top_rated?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getMoviePopular: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/movie/popular?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
         // TV
         getTvbyId: async (parent, { tmdbId }) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/${tmdbId}?language=en-US&api_key=${process.env.TMDB_KEY}`)).data,
-        getTvbyQuery: async (parent, { query, page = 1 }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/tv?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvTrendingToday: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/tv/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvTrendingWeek: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/tv/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvAiringToday: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/airing_today?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvOnTheAir: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/on_the_air?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvTopRated: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/top_rated?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getTvPopular: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/tv/popular?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getTvbyQuery: async (parent, { query, page = 1 }) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/search/tv?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getTvTrendingToday: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/trending/tv/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getTvTrendingWeek: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/trending/tv/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getTvAiringToday: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/tv/airing_today?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getTvOnTheAir: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/tv/on_the_air?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getTvTopRated: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/tv/top_rated?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getTvPopular: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/tv/popular?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
 
         // People
-        getpeoplebyQuery: async (parent, { query, page = 1 }) => (await axios.get(`${process.env.TMDB_BASE_URL}/search/person?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getPeopleTrendingWeek: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/person/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
-        getPeopleTrendingToday: async (parent, { page = 1 } = {}) => (await axios.get(`${process.env.TMDB_BASE_URL}/trending/person/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`)).data.results,
+        getpeoplebyQuery: async (parent, { query, page = 1 }) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/search/person?query=${query}&language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getPeopleTrendingWeek: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/trending/person/week?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        },
+        getPeopleTrendingToday: async (parent, { page = 1 } = {}) => {
+            const response = await axios.get(`${process.env.TMDB_BASE_URL}/trending/person/day?language=en-US&page=${page}&api_key=${process.env.TMDB_KEY}`);
+            return {
+                results: response.data.results,
+                currentPage: page,
+                hasNextPage: page < response.data.total_pages,
+                total_pages: response.data.total_pages,
+                total_results: response.data.total_results,
+            };
+        }
     }
 }
 
