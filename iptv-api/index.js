@@ -5,7 +5,7 @@ const app = express();
 const port = 3000;
 
 app.get('/iptv/country', async (req, res) => {
-    const url = "/iptv/index.country.m3u";
+    const url = "https://iptv-org.github.io/iptv/index.country.m3u";
     const searchTerm = req.query.search;
     const groupSearchTerm = req.query.group;
     const page = parseInt(req.query.page) || 1;
@@ -56,8 +56,8 @@ app.get('/iptv/country', async (req, res) => {
     }
 });
 
-app.get('/iptv/country', async (req, res) => {
-    const url = "/iptv/index.country.m3u";
+app.get('/iptv/category', async (req, res) => {
+    const url = "https://iptv-org.github.io/iptv/index.nsfw.m3u";
     const searchTerm = req.query.search;
     const groupSearchTerm = req.query.group;
     const page = parseInt(req.query.page) || 1;
@@ -109,7 +109,7 @@ app.get('/iptv/country', async (req, res) => {
 });
 
 app.get('/iptv/countries', async (req, res) => {
-    const url = "/iptv/index.country.m3u";
+    const url = "https://iptv-org.github.io/iptv/index.country.m3u";
     try {
         const response = await axios.get(url);
         const data = response.data;
@@ -138,7 +138,7 @@ app.get('/iptv/countries', async (req, res) => {
 });
 
 app.get('/iptv/categories', async (req, res) => {
-    const url = "/iptv/index.nsfw.m3u";
+    const url = "https://iptv-org.github.io/iptv/index.nsfw.m3u";
     try {
         const response = await axios.get(url);
         const data = response.data;
