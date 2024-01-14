@@ -1,5 +1,4 @@
 const express = require('express');
-const axios = require('axios');
 const M3U8FileParser = require('m3u8-file-parser');
 const fs = require('fs');
 const app = express();
@@ -107,7 +106,7 @@ app.get('/iptv/country', async (req, res) => {
     }
 });
 
-app.get('/countries', async (req, res) => {
+app.get('/iptv/countries', async (req, res) => {
     const filePath = "./db/index.country.m3u";
     try {
         const data = fs.readFileSync(filePath, 'utf8');
@@ -135,7 +134,7 @@ app.get('/countries', async (req, res) => {
     }
 });
 
-app.get('/categories', async (req, res) => {
+app.get('/iptv/categories', async (req, res) => {
     const filePath = "./db/index.nsfw.m3u";
     try {
         const data = fs.readFileSync(filePath, 'utf8');

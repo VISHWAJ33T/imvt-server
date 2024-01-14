@@ -8,6 +8,10 @@
     {
       "src": "consumet-api/src/main.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "iptv-api/index.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
