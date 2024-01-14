@@ -1,18 +1,19 @@
 const express = require('express');
 const M3U8FileParser = require('m3u8-file-parser');
-const fs = require('fs');
+const axios = require('axios');
 const app = express();
 const port = 3000;
 
-app.get('/iptv/category', async (req, res) => {
-    const filePath = "./db/index.nsfw.m3u";
+app.get('/iptv/country', async (req, res) => {
+    const url = "/iptv/index.country.m3u";
     const searchTerm = req.query.search;
     const groupSearchTerm = req.query.group;
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 32;
 
     try {
-        const data = fs.readFileSync(filePath, 'utf8');
+        const response = await axios.get(url);
+        const data = response.data;
 
         const reader = new M3U8FileParser();
         reader.read(data);
@@ -56,14 +57,15 @@ app.get('/iptv/category', async (req, res) => {
 });
 
 app.get('/iptv/country', async (req, res) => {
-    const filePath = "./db/index.country.m3u";
+    const url = "/iptv/index.country.m3u";
     const searchTerm = req.query.search;
     const groupSearchTerm = req.query.group;
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 32;
 
     try {
-        const data = fs.readFileSync(filePath, 'utf8');
+        const response = await axios.get(url);
+        const data = response.data;
 
         const reader = new M3U8FileParser();
         reader.read(data);
@@ -107,9 +109,10 @@ app.get('/iptv/country', async (req, res) => {
 });
 
 app.get('/iptv/countries', async (req, res) => {
-    const filePath = "./db/index.country.m3u";
+    const url = "/iptv/index.country.m3u";
     try {
-        const data = fs.readFileSync(filePath, 'utf8');
+        const response = await axios.get(url);
+        const data = response.data;
 
         const reader = new M3U8FileParser();
         reader.read(data);
@@ -135,9 +138,10 @@ app.get('/iptv/countries', async (req, res) => {
 });
 
 app.get('/iptv/categories', async (req, res) => {
-    const filePath = "./db/index.nsfw.m3u";
+    const url = "/iptv/index.nsfw.m3u";
     try {
-        const data = fs.readFileSync(filePath, 'utf8');
+        const response = await axios.get(url);
+        const data = response.data;
 
         const reader = new M3U8FileParser();
         reader.read(data);
