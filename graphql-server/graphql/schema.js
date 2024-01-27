@@ -17,6 +17,7 @@ type TV {
     origin_country: [String]
     streamingId: String
   }
+
   type Movie {
     adult: Boolean
     backdrop_path: String
@@ -35,6 +36,7 @@ type TV {
     vote_count: Int
     streamingId: String
   }
+
   type Collection {
     id: ID
     name: String
@@ -73,10 +75,21 @@ type TV {
   type Video {
     results: [VideoResults]
   }
-  type Logo {
-    url: String
-    aspectRatio: Float
+  type Image {
+    file_path: String
+    aspect_ratio: Float
     width: Int
+    vote_average: Float
+    vote_count: Int
+  }
+  type Profiles {
+    profiles: [Image]
+  }
+  type Images{
+    id: ID
+    backdrops: [Image]
+    posters: [Image]
+    logos: [Image]
   }
   type MediaRecommendations {
     id: ID
@@ -132,7 +145,7 @@ type TV {
     vote_count: Int
     streamingId: String
     casts: [PeopleCredits]
-    logos: [Logo]
+    Images: Images
     recommendations: [MediaRecommendations]
     similar: [MediaRecommendations]
     reviews: [Review]
@@ -225,7 +238,7 @@ type TV {
     number_of_seasons: Int
     number_of_episodes: Int
     casts: [PeopleCredits]
-    logos: [Logo]
+    Images: Images
     similar: [MediaRecommendations]
     recommendations: [MediaRecommendations]
     seasons: [Season]
@@ -235,11 +248,18 @@ type TV {
   }
   
   union Media = Movie | TV | People
-  
+
   type PeopleCredits {
     adult: Boolean
     id: ID
+    genres:[String]
     name: String
+    title: String
+    original_language: String
+    original_title: String
+    overview: String
+    backdrop_path: String
+    poster_path: String
     original_name: String
     media_type: String
     popularity: Float
@@ -249,8 +269,16 @@ type TV {
     cast_id: Int
     character: String
     credit_id: String
+    job: String
     order: Int
+    department: String
   }
+
+ type combined_credits {
+    cast: [PeopleCredits]
+    crew: [PeopleCredits]
+  }
+
   type People {
     adult: Boolean
     biography: String
@@ -263,6 +291,12 @@ type TV {
     known_for_department: String
     profile_path: String
     known_for: [Media]
+    birthday: String
+    deathday: String
+    place_of_birth: String
+    also_known_as: [String]
+    images : Profiles
+    combined_credits: combined_credits
   }
   
   type PaginatedMedia {
@@ -298,6 +332,7 @@ type TV {
   }
   
   type Query {
+    discoverMedia(type: String, dategte: String, datelte: String, votesAvglte: Float, votesAvggte: Float, votesCountlte: Int, votesCountgte: Int, sort: String, genres: String, page: Int): PaginatedMedia
     getAnyTrendingToday(page: Int): PaginatedMedia
     getAnyTrendingWeek(page: Int): PaginatedMedia
     getAnybyQuery(query: String!, page: Int): PaginatedMedia
@@ -319,6 +354,7 @@ type TV {
     getPeopleTrendingToday(page: Int): PaginatedPeople
     getPeopleTrendingWeek(page: Int): PaginatedPeople
     getpeoplebyQuery(query: String!, page: Int): PaginatedPeople
+    getpeoplebyId(id: ID!): People
   }
   `
 

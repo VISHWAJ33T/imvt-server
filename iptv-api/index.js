@@ -1,9 +1,10 @@
 const express = require('express');
 const M3U8FileParser = require('m3u8-file-parser');
 const axios = require('axios');
+const cors = require('cors');
 const app = express();
-const port = 3000;
-
+const port = 5000;
+app.use(cors());
 app.get('/iptv/country', async (req, res) => {
     const url = "https://iptv-org.github.io/iptv/index.country.m3u";
     const searchTerm = req.query.search;
