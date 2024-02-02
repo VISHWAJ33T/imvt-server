@@ -139,7 +139,7 @@ app.get('/iptv/countries', async (req, res) => {
 });
 
 app.get('/iptv/categories', async (req, res) => {
-    const url = "https://iptv-org.github.io/iptv/index.nsfw.m3u";
+    const url = "https://iptv-org.github.io/iptv/index.m3u";
     try {
         const response = await axios.get(url);
         const data = response.data;
